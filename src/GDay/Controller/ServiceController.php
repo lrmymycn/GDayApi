@@ -21,11 +21,7 @@ class ServiceController extends BaseController{
 
     public function indexAction()
     {
-        $user = array(
-            'suburb_id' => 1
-        );
-
-        $response = $this->serviceManager->getServicesOfUser($user);
+        $response = $this->serviceManager->getServicesBySuburbId(1);
 
         return $this->json($response);
     }

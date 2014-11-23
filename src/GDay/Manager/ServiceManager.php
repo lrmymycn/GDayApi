@@ -17,8 +17,8 @@ class ServiceManager {
         $this->serviceService = new \GDay\Service\ServiceService();
     }
 
-    function getServicesOfUser($user){
-        $services = $this->serviceService->getServicesBySuburbId($user['suburb_id']);
+    function getServicesBySuburbId($suburbId){
+        $services = $this->serviceService->getServicesBySuburbId($suburbId);
 
         $serviceList = array();
         foreach($services as $service){
