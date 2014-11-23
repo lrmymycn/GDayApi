@@ -12,4 +12,12 @@ class BaseController extends \SlimController\SlimController{
 
         parent::__construct($app);
     }
+
+    protected function json($result) {
+        echo \GDay\Infrastructure\Helper\ResponseHelper::json($this->app, $result);
+    }
+
+    protected function success(){
+        echo \GDay\Infrastructure\Helper\ResponseHelper::json($this->app,'',200,0, 'success');
+    }
 } 

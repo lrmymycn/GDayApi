@@ -11,7 +11,8 @@ $app = New \SlimController\Slim(array(
 $app->add(new \Slim\Middleware\ContentTypes());
 
 $app->addRoutes(array(
-    '/user'            => 'User:index'
+    '/user'            => 'User:index',
+    '/service'        => 'Service:index'
 ));
 
 $errorHandler = new \GDay\Infrastructure\Handler\ErrorHandler($app);
