@@ -18,6 +18,9 @@ class ResponseHelper {
         // setting response content type to json
         $app->contentType('application/json');
 
+        // allow cross domain
+        $app->response->header('Access-Control-Allow-Origin', '*');
+
         $response = array();
         $response['errorCode'] = $error_code;
         $response['message'] = $message;
