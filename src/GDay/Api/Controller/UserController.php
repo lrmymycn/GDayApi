@@ -1,5 +1,5 @@
 <?php
-namespace GDay\Controller;
+namespace GDay\Api\Controller;
 
 
 class UserController extends BaseController{

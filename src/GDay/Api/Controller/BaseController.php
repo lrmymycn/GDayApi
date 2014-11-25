@@ -1,5 +1,5 @@
 <?php
-namespace GDay\Controller;
+namespace GDay\Api\Controller;
 
 
 class BaseController extends \SlimController\SlimController{
@@ -14,10 +14,10 @@ class BaseController extends \SlimController\SlimController{
     }
 
     protected function json($result) {
-        echo \GDay\Infrastructure\Helper\ResponseHelper::json($this->app, $result);
+        echo \GDay\Api\Infrastructure\Helper\ResponseHelper::json($this->app, $result);
     }
 
     protected function success(){
-        echo \GDay\Infrastructure\Helper\ResponseHelper::json($this->app,'',200,0, 'success');
+        echo \GDay\Api\Infrastructure\Helper\ResponseHelper::json($this->app,'',200,0, 'success');
     }
 } 

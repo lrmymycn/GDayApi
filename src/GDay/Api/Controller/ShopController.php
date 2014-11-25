@@ -6,7 +6,7 @@
  * Time: 10:00 PM
  */
 
-namespace GDay\Controller;
+namespace GDay\Api\Controller;
 
 
 class ShopController extends BaseController {

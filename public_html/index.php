@@ -3,7 +3,7 @@ require '../bootstrap.php';
 
 // init app
 $app = New \SlimController\Slim(array(
-    'controller.class_prefix'    => '\\GDay\\Controller',
+    'controller.class_prefix'    => '\\GDay\\Api\\Controller',
     'controller.class_suffix'   => 'Controller',
     'controller.method_suffix'   => 'Action',
 ));
@@ -16,7 +16,7 @@ $app->addRoutes(array(
     '/shop'           => 'Shop:index'
 ));
 
-$errorHandler = new \GDay\Infrastructure\Handler\ErrorHandler($app);
+$errorHandler = new \GDay\Api\Infrastructure\Handler\ErrorHandler($app);
 $errorHandler->register();
 
 $app->run();

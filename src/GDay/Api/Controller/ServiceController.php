@@ -6,7 +6,7 @@
  * Time: 9:27 PM
  */
 
-namespace GDay\Controller;
+namespace GDay\Api\Controller;
 
 
 class ServiceController extends BaseController{

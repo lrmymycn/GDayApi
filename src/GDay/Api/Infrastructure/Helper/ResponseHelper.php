@@ -6,7 +6,7 @@
  * Time: 12:08 AM
  */
 
-namespace GDay\Infrastructure\Helper;
+namespace GDay\Api\Infrastructure\Helper;
 
 
 class ResponseHelper {

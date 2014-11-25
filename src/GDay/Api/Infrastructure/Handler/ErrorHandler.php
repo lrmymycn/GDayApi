@@ -6,7 +6,7 @@
  * Time: 12:07 AM
  */
 
-namespace GDay\Infrastructure\Handler;
+namespace GDay\Api\Infrastructure\Handler;
 
 
 class ErrorHandler {
