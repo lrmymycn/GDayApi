@@ -11,7 +11,7 @@ namespace GDay\Library\Train;
 
 class TimeTable {
 
-<<<<<<< HEAD
+
     private $TrainService;
 
     function __construct(){
@@ -23,9 +23,9 @@ class TimeTable {
     }
 
     public function test(){
-       // $toCityurl = self::getRealTimeDataUrl(1,1);
-       // $toCityArray = self::getRealTimeData($toCityurl);
-       // $result = self::updateArriveTime($toCityArray);
+        // $toCityurl = self::getRealTimeDataUrl(1,1);
+        // $toCityArray = self::getRealTimeData($toCityurl);
+        // $result = self::updateArriveTime($toCityArray);
         //echo $result;
         $fromCityurl = self::getRealTimeDataUrl(1,0);
         $fromCityArray = self::getRealTimeData($fromCityurl);
@@ -80,11 +80,6 @@ class TimeTable {
             $arriveTime = date('H:i:s', strtotime($plannedTime) + $time['delay']*60);
             $this->trainService->updateArriveTimeBySuburbIdAndDirection($time['start_time'], $arriveTime, 1, $direction);
         }
-=======
-    public function updateTimeTable(){
-        //TODO read API update timetable
-
-        echo '1';
->>>>>>> FETCH_HEAD
     }
+
 } 
