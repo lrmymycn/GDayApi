@@ -2,4 +2,7 @@
 require '../bootstrap.php';
 
 $trainTime = new \GDay\Library\Train\TimeTable;
-$trainTime->updateTimeTable();
+$timeTable = $trainTime->getNextTrain();
+?>
+
+Rhodes next train (FROM CITY): <?php echo $timeTable['arrive_time'] ?>

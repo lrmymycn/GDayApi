@@ -19,8 +19,21 @@ class TrainService extends BaseService{
         return $this->db->train_station()->insert($station);
     }
 
-    function getNextTrainBySuburbId($suburbId){
-        
+    function getNextTrainBySuburbId($suburbId, $direction){
+        $sql = 'SELECT * FROM gday.train_time
+                WHERE arrive_time > CURTIME() AND direction = :direction AND suburb_id = :suburbId
+                ORDER BY arrive_time
+                LIMIT 1';
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindParam(':suburbId', $suburbId);
+        $query->bindParam(':direction', $direction);
+
+        if($data = $query->execute()){
+            return $query->fetch();
+        }else{
+            return null;
+        }
     }
 
     function getTrainCodeBySuburbId($suburbId){
