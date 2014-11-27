@@ -22,6 +22,7 @@ class TimeTable {
 
     }
 
+
     public function updateTimeTable(){
         $suburbId = 1; //TODO get form url
 
@@ -96,4 +97,4 @@ class TimeTable {
         }
     }
 
-} 
+}
