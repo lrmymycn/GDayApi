@@ -11,6 +11,7 @@ namespace GDay\Library\Train;
 
 class TimeTable {
 
+<<<<<<< HEAD
     private $TrainService;
 
     function __construct(){
@@ -79,5 +80,11 @@ class TimeTable {
             $arriveTime = date('H:i:s', strtotime($plannedTime) + $time['delay']*60);
             $this->trainService->updateArriveTimeBySuburbIdAndDirection($time['start_time'], $arriveTime, 1, $direction);
         }
+=======
+    public function updateTimeTable(){
+        //TODO read API update timetable
+
+        echo '1';
+>>>>>>> FETCH_HEAD
     }
 } 
