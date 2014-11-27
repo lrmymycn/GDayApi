@@ -34,8 +34,8 @@ class TrainService extends BaseService{
 
     function getTrainCodeBySuburbId($suburbId){
         $row = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
-        if ($data = $row->fetch()) {
-            return $data["code"];
+        if ($data = $row->fetchAll()) {
+            return $data;
         }else{
             return null;
         }
