@@ -19,7 +19,9 @@ class TimeTable {
     public function getNextTrain(){
         $suburbId = 1; //TODO
 
+        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
 
+        return $timeTable;
     }
 
 
@@ -47,7 +49,7 @@ class TimeTable {
 
             $url = "http://realtime.grofsoft.com/tripview/realtime?routes=CR_{$trainCode}_{$directionCode}&type=dv";
 
-            //Prevent to be a TripView ios app
+            //Pretend  to be a TripView ios app
             $options  = array('http' => array('user_agent' => 'TripViewLite/223 CFNetwork/548.1.4 Darwin/11.0.0'));
             $context  = stream_context_create($options);
             $response = file_get_contents($url, false, $context);
