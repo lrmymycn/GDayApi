@@ -10,75 +10,89 @@ namespace GDay\Library\Train;
 
 
 class TimeTable {
-
-
-    private $TrainService;
+    private $trainService;
 
     function __construct(){
         $this->trainService = new \GDay\Service\TrainService();
     }
 
-    public function generateTimeTable(){
+    public function getNextTrain(){
+        $suburbId = 1; //TODO
+
 
     }
 
-    public function test(){
-        // $toCityurl = self::getRealTimeDataUrl(1,1);
-        // $toCityArray = self::getRealTimeData($toCityurl);
-        // $result = self::updateArriveTime($toCityArray);
-        //echo $result;
-        $fromCityurl = self::getRealTimeDataUrl(1,0);
-        $fromCityArray = self::getRealTimeData($fromCityurl);
-        $result = self::updateArriveTime($fromCityArray, 0);
+    public function updateTimeTable(){
+        $suburbId = 1; //TODO get form url
 
-    }
+        $data = $this->getRealTimeData($suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
 
-    private function getRealTimeDataUrl($suburbID, $direction) {
-        $trainCode = $this->trainService->getTrainCodeBySuburbId($suburbID);
-        if($direction) {
-            $directionCode = "u";
-        } else {
-            $directionCode = "d";
+        if($data != null && isset($data['delays'])){
+            $delays = $this->parseData($data['delays']);
+
+            $this->updateArriveTime($delays, $suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
         }
-        $url = "http://realtime.grofsoft.com/tripview/realtime?routes=CR_{$trainCode}_{$directionCode}&type=dv";
-        return $url;
     }
 
-    private function getRealTimeData($url){
-        $result = file_get_contents($url);
-        $json = json_decode($result, true);
-        $arrayRoute = array();
+    private function getRealTimeData($suburbId, $direction) {
+        try{
+            $trainCode = $this->trainService->getTrainCodeBySuburbId($suburbId);
+
+            if(!$trainCode){
+                return null;
+            }
+
+            $directionCode = $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "u" : "d";
+
+            $url = "http://realtime.grofsoft.com/tripview/realtime?routes=CR_{$trainCode}_{$directionCode}&type=dv";
+
+            //Prevent to be a TripView ios app
+            $options  = array('http' => array('user_agent' => 'TripViewLite/223 CFNetwork/548.1.4 Darwin/11.0.0'));
+            $context  = stream_context_create($options);
+            $response = file_get_contents($url, false, $context);
+
+            return json_decode($response, true);
+        }
+        catch(\Exception $e){
+            //TODO log error
+            return null;
+        }
+    }
+
+    private function parseData($delays){
+        $tripDelays = array();
         $now = strtotime(date("G:i"));
-        $count = 0;
-        foreach ($json['delays'] as $route) {
-            $arrayRoute[$count] = array();
-            $arrayRoute[$count]['start_time'] = $route['start'];
-            if ($route['offsets']) {
-                $delays = explode(",", $route['offsets']);
-                if (count($delays) > 2) {
-                    for ($i = count($delays) - 2; $i >= 0; $i = $i - 2) {
-                        $delay = strtotime($delays[$i]);
-                        if (($now - $delay) >= 0) {
-                            $arrayRoute[$count]['delay'] = $delays[$i + 1];
+
+        foreach ($delays as $route) {
+            $tripDelay = array();
+            $tripDelay['start_time'] = $route['start'];
+
+            if (isset($route['offsets'])) {
+                $offsets = explode(",", $route['offsets']);
+                if (count($offsets) > 2) {
+                    for ($i = count($offsets) - 2; $i >= 0; $i = $i - 2) {
+                        $offset = strtotime($offsets[$i]);
+
+                        if (($now - $offset) >= 0) {
+                            $tripDelay['delay'] = $offsets[$i + 1];
                             break;
                         }
                     }
                 } else {
-                    $arrayRoute[$count]['delay'] = $delays[1];
+                    $tripDelay['delay'] = $offsets[1];
                 }
             } else {
-                $arrayRoute[$count]['delay'] = 0;
+                $tripDelay['delay'] = 0;
             }
-            $count++;
+
+            $tripDelays[] = $tripDelay;
         }
-        return $arrayRoute;
+        return $tripDelays;
     }
 
-    private function updateArriveTime($timeList, $direction){
-        foreach($timeList as $time) {
-            $plannedTime = $this->trainService->getPlannedTimeByStartTimeAndSuburbIdAndDirection($time['start_time'], 1, $direction);
-            $arriveTime = date('H:i:s', strtotime($plannedTime) + $time['delay']*60);
-            $this->trainService->updateArriveTimeBySuburbIdAndDirection($time['start_time'], $arriveTime, 1, $direction);
+    private function updateArriveTime($delays,$suburbId, $direction){
+        foreach($delays as $delay) {
+            $this->trainService->updateRealTimeTable($delay['start_time'], $suburbId, $direction, $delay['delay']);
         }
     }
 

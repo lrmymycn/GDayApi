@@ -19,6 +19,10 @@ class TrainService extends BaseService{
         return $this->db->train_station()->insert($station);
     }
 
+    function getNextTrainBySuburbId($suburbId){
+        
+    }
+
     function getTrainCodeBySuburbId($suburbId){
         $row = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
         if ($data = $row->fetch()) {
@@ -28,23 +32,18 @@ class TrainService extends BaseService{
         }
     }
 
-    function getPlannedTimeByStartTimeAndSuburbIdAndDirection($startTime, $suburbId, $direction){
-        $row = $this->db->train_time()->where(array("suburb_id" => $suburbId, "start_time" => $startTime, "direction" => $direction, "is_deleted" => 0));
-        if ($data = $row->fetch()) {
-            return $data["planned_arrive_time"];
-        }else{
-            return null;
-        }
-    }
+    function updateRealTimeTable($startTime,$suburbId, $direction, $minutes){
+        $sql = 'UPDATE train_time
+               SET arrive_time = DATE_ADD(planned_arrive_time, INTERVAL %s MINUTE), date_updated = NOW()
+               WHERE start_time = :startTime AND suburb_id = :suburbId AND direction = :direction AND is_deleted = 0';
 
-    function updateArriveTimeBySuburbIdAndDirection($startTime, $arriveTime, $suburbId, $direction){
-        $row = $this->db->train_time()->where(array("start_time" => $startTime, "suburb_id" => $suburbId, "direction" => $direction, "is_deleted" => 0));
+        $sql = sprintf($sql, $minutes);
 
-        if ($row) {
-            $data = array(
-                "arrive_time" => $arriveTime
-            );
-            return $row->update($data);
-        }
+        $query = $this->pdo->prepare($sql);
+        $query->bindParam(':startTime', $startTime);
+        $query->bindParam(':suburbId', $suburbId);
+        $query->bindParam(':direction', $direction);
+
+        $query->execute();
     }
 } 

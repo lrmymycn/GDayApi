@@ -19,8 +19,4 @@ $app->addRoutes(array(
 $errorHandler = new \GDay\Api\Infrastructure\Handler\ErrorHandler($app);
 $errorHandler->register();
 
-$trainTime = new \GDay\Library\Train\TimeTable;
-$trainTime->test();
-//$trainTime->getRealTimeData("http://realtime.grofsoft.com/tripview/realtime?routes=CR_nta_d&type=dv");
-
 $app->run();
