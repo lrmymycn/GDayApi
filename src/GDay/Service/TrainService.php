@@ -15,10 +15,6 @@ class TrainService extends BaseService{
         parent::__construct();
     }
 
-    function createStation($station){
-        return $this->db->train_station()->insert($station);
-    }
-
     function getNextTrainBySuburbId($suburbId, $direction){
         $sql = 'SELECT * FROM gday.train_time
                 WHERE arrive_time > CURTIME() AND direction = :direction AND suburb_id = :suburbId
@@ -45,18 +41,20 @@ class TrainService extends BaseService{
         }
     }
 
-    function updateRealTimeTable($startTime,$suburbId, $direction, $minutes){
-        $sql = 'UPDATE train_time
-               SET arrive_time = DATE_ADD(planned_arrive_time, INTERVAL %s MINUTE), date_updated = NOW()
-               WHERE start_time = :startTime AND suburb_id = :suburbId AND direction = :direction AND is_deleted = 0';
+    function getTrainTimeByStartTimeAndSuburbIdAndDirection($startTime, $suburbId, $direction){
+        $row = $this->db->train_time()->where(array("suburb_id" => $suburbId, "start_time" => $startTime, "direction" => $direction, "is_deleted" => 0));
+        if ($data = $row->fetch()) {
+            return $data;
+        }else{
+            return null;
+        }
+    }
 
-        $sql = sprintf($sql, $minutes);
-
-        $query = $this->pdo->prepare($sql);
-        $query->bindParam(':startTime', $startTime);
-        $query->bindParam(':suburbId', $suburbId);
-        $query->bindParam(':direction', $direction);
-
-        $query->execute();
+    function updateArriveTime($trainTime, $arriveTime){
+        $data = array(
+            'date_updated' => date('Y-m-d H:i:s'),
+            "arrive_time" => $arriveTime
+        );
+        return $trainTime->update($data);
     }
 } 

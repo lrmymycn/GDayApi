@@ -94,7 +94,9 @@ class TimeTable {
 
     private function updateArriveTime($delays,$suburbId, $direction){
         foreach($delays as $delay) {
-            $this->trainService->updateRealTimeTable($delay['start_time'], $suburbId, $direction, $delay['delay']);
+            $trainTime = $this->trainService->getTrainTimeByStartTimeAndSuburbIdAndDirection($delay['start_time'], $suburbId, $direction);
+            $arriveTime = date('H:i:s', strtotime($trainTime['planned_arrive_time']) + $delay['delay']*60);
+            $this->trainService->updateArriveTime($trainTime,$arriveTime);
         }
     }
 

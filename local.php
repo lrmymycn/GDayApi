@@ -16,8 +16,3 @@ define('DB_NAME', 'gday');
 define('DB_USER', 'gday');
 define('DB_PASSWORD', 'gday');
 define('DB_HOST', 'localhost');
-
-/*
- * Train Timetable
- */
-define('TIME_TABLE_FOLDER', 'C:/Projects/_sam/Gday/Api/src/Files/Timetable/');
