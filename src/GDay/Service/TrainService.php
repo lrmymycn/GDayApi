@@ -33,12 +33,19 @@ class TrainService extends BaseService{
     }
 
     function getTrainCodeBySuburbId($suburbId){
-        $row = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
-        if ($data = $row->fetchAll()) {
-            return $data;
-        }else{
+        $rows = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
+        if($rows){
+            $codes = array();
+            $i = 0;
+            foreach ($rows as $row) {
+                $codes[$i] = $row[code];
+                $i++;
+            }
+            return $codes;
+        } else {
             return null;
         }
+
     }
 
     function getTrainTimeByStartTimeAndSuburbIdAndDirection($startTime, $suburbId, $direction){
