@@ -19,21 +19,32 @@ class TrainService extends BaseService{
         return $this->db->train_station()->insert($station);
     }
 
-    function createTrip($trip){
-        return $this->db->train_trip()->insert($trip);
-    }
-
-    function createTimeTable($timetable){
-        return $this->db->train_timetable()->insert($timetable);
-    }
-
-    function getTripByStartTime($stationId, $departTime){
-        $trip = $this->db->train_trip()->where(array("train_station_id" => $stationId, "depart_time" => $departTime, "is_deleted" => 0));
-
-        if ($data = $trip->fetch()) {
-            return $data;
+    function getTrainCodeBySuburbId($suburbId){
+        $row = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
+        if ($data = $row->fetch()) {
+            return $data["code"];
         }else{
             return null;
+        }
+    }
+
+    function getPlannedTimeByStartTimeAndSuburbIdAndDirection($startTime, $suburbId, $direction){
+        $row = $this->db->train_time()->where(array("suburb_id" => $suburbId, "start_time" => $startTime, "direction" => $direction, "is_deleted" => 0));
+        if ($data = $row->fetch()) {
+            return $data["planned_arrive_time"];
+        }else{
+            return null;
+        }
+    }
+
+    function updateArriveTimeBySuburbIdAndDirection($startTime, $arriveTime, $suburbId, $direction){
+        $row = $this->db->train_time()->where(array("start_time" => $startTime, "suburb_id" => $suburbId, "direction" => $direction, "is_deleted" => 0));
+
+        if ($row) {
+            $data = array(
+                "arrive_time" => $arriveTime
+            );
+            return $row->update($data);
         }
     }
 } 
