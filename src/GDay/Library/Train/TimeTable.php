@@ -46,8 +46,15 @@ class TimeTable {
             }
 
             $directionCode = $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "u" : "d";
+            $uri = "";
+            foreach($trainCode as $code) {
+                $uri = $uri."CR_{$code}_{$directionCode},";
+            }
 
-            $url = "http://realtime.grofsoft.com/tripview/realtime?routes=CR_{$trainCode}_{$directionCode}&type=dv";
+
+            $uri = substr($uri, 0, -1);
+
+            $url = "http://realtime.grofsoft.com/tripview/realtime?routes={$uri}&type=dv";
 
             //Pretend  to be a TripView ios app
             $options  = array('http' => array('user_agent' => 'TripViewLite/223 CFNetwork/548.1.4 Darwin/11.0.0'));
