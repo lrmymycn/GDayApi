@@ -15,6 +15,9 @@ $arriveTime = strtotime($timeTable['arrive_time']);
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Next Train">
+    <link rel="apple-touch-icon" href="icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icon-120x120.png">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- style -->
@@ -83,7 +86,7 @@ $arriveTime = strtotime($timeTable['arrive_time']);
                 <!-- countdown end -->
 
                 <!-- intro line -->
-                <div><span class="intro-line"></span><span class="intro-intro">3 MINS LATE</span></div>
+                <div><span class="intro-line"></span><span class="intro-intro">3 MINUTES LATE</span></div>
                 <!-- intro line end -->
 
             </div>
