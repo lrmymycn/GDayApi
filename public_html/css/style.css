@@ -545,6 +545,32 @@ filter: alpha(opacity=50);
 -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 }
 
+.panel-button {
+    position: absolute;
+    width: auto;
+    height: 15px;
+    top: 16px;
+    right: 20px;
+    background: none;
+    display: visible;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.panel-button a {
+    position: relative;
+    font-family: 'LeagueGothicRegular';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+}
+
+.panel-button a:hover {
+    color: #fff;
+}
 
 /* site loader */
 .loader {

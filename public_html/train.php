@@ -12,11 +12,9 @@ $arriveTime = strtotime($timeTable['arrive_time']);
 <head>
     <meta charset="utf-8">
     <title>Next Train</title>
-
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <meta name="keywords" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Next Train">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- style -->
@@ -72,7 +70,7 @@ $arriveTime = strtotime($timeTable['arrive_time']);
                                 <p class="timeRefHours">hours</p>
                             </li>
                             <li><span class="minutes">14</span>
-                                <p class="timeRefMinutes">minutes</p>
+                                <p class="timeRefMinutes">mins</p>
                             </li>
                             <li><span>at</span></li>
                             <li><span><?php echo date('h', $arriveTime) ?></span><span class="colon">:</span><span><?php echo date('i', $arriveTime) ?></span></span>
@@ -94,6 +92,8 @@ $arriveTime = strtotime($timeTable['arrive_time']);
     </div>
 </div>
 <!-- hours wrapper end -->
+
+<div class="panel-button"><a href="#">Opposite Direction</a></div>
 
 <!-- scripts -->
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
