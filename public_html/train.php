@@ -5,6 +5,16 @@ $trainTime = new \GDay\Library\Train\TimeTable;
 $timeTable = $trainTime->getNextTrain();
 
 $arriveTime = strtotime($timeTable['arrive_time']);
+$now = strtotime('now');
+$internal = $arriveTime - $now;
+$minutesToGo = ceil($internal / 60);
+$hoursToGo = 0;
+if($minutesToGo >= 60){
+    $hoursToGo = floor($minutesToGo / 60);
+    $hoursToGo = str_pad($hoursToGo, 2, "0", STR_PAD_LEFT);
+    $minutesToGo = $minutesToGo % 60;
+    $minutesToGo = str_pad($minutesToGo, 2, "0", STR_PAD_LEFT);
+}
 ?>
 
 <!DOCTYPE html>
@@ -69,10 +79,10 @@ $arriveTime = strtotime($timeTable['arrive_time']);
                 <div id="countdown-wrapper">
                     <div id="countdown-wrap">
                         <ul id="countdown">
-                            <li><span class="hours">00</span>
+                            <li><span class="hours"><?php echo $hoursToGo ?></span>
                                 <p class="timeRefHours">hours</p>
                             </li>
-                            <li><span class="minutes">14</span>
+                            <li><span class="minutes"><?php echo $minutesToGo ?></span>
                                 <p class="timeRefMinutes">mins</p>
                             </li>
                             <li><span>at</span></li>
@@ -108,9 +118,9 @@ $arriveTime = strtotime($timeTable['arrive_time']);
             // Functionality
             slideshow               :   1,			// Slideshow on/off
             autoplay				:	1,			// Slideshow starts playing automatically
-            start_slide             :   1,			// Start slide (0 is random)
+            start_slide             :   0,			// Start slide (0 is random)
             stop_loop				:	0,			// Pauses slideshow on last slide
-            random					: 	0,			// Randomize slide order (Ignores start slide)
+            random					: 	1,			// Randomize slide order (Ignores start slide)
             slide_interval          :   3000,		// Length between transitions
             transition              :   1, 			// 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
             transition_speed		:	3000,		// Speed of transition
