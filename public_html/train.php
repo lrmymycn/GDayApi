@@ -98,7 +98,7 @@ if($minutesToGo >= 60){
                 <!-- countdown end -->
 
                 <!-- intro line -->
-                <div><span class="intro-line"></span><span class="intro-intro">3 MINUTES LATE</span></div>
+                <div><span class="intro-line"></span><span class="intro-intro"><?php echo $timeTable['delay'] ?> MINUTES LATE</span></div>
                 <!-- intro line end -->
 
             </div>

@@ -26,7 +26,7 @@ class ErrorHandler {
             error_log('ERROR Code: ' . $e->getCode());
             error_log('ERROR Message: '.  $e->getMessage());
             error_log('ERROR Trace: ' . $e->getTraceAsString());
-            echo \GDay\Infrastructure\Helper\ResponseHelper::json($app, '', 200, $e->getCode(), $e->getMessage(), $e->getTraceAsString());
+            echo \GDay\Api\Infrastructure\Helper\ResponseHelper::json($app, '', 200, $e->getCode(), $e->getMessage(), $e->getTraceAsString());
         });
     }
 } 
