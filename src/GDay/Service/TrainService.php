@@ -57,10 +57,11 @@ class TrainService extends BaseService{
         }
     }
 
-    function updateArriveTime($trainTime, $arriveTime){
+    function updateArriveTime($trainTime, $arriveTime, $delayTime){
         $data = array(
             'date_updated' => date('Y-m-d H:i:s'),
-            "arrive_time" => $arriveTime
+            "arrive_time" => $arriveTime,
+            "delay" => $delayTime
         );
         return $trainTime->update($data);
     }
