@@ -12,7 +12,7 @@ $app->add(new \Slim\Middleware\ContentTypes());
 
 $app->addRoutes(array(
     '/user'            => 'User:index',
-    '/service'        => 'Service:index',
+    '/discovery'        => 'Discovery:index',
     '/shop'           => 'Shop:index'
 ));
 

@@ -11,9 +11,9 @@ $minutesToGo = ceil($internal / 60);
 $hoursToGo = 0;
 if($minutesToGo >= 60){
     $hoursToGo = floor($minutesToGo / 60);
-    $hoursToGo = str_pad($hoursToGo, 2, "0", STR_PAD_LEFT);
+    $hoursToGo = str_pad($hoursToGo, 2, '0', STR_PAD_LEFT);
     $minutesToGo = $minutesToGo % 60;
-    $minutesToGo = str_pad($minutesToGo, 2, "0", STR_PAD_LEFT);
+    $minutesToGo = str_pad($minutesToGo, 2, '0', STR_PAD_LEFT);
 }
 ?>
 
@@ -21,10 +21,10 @@ if($minutesToGo >= 60){
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Next Train</title>
+    <title>Next Train in Rhodes</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Next Train">
+    <meta name="apple-mobile-web-app-title" content="Catch Train">
     <link rel="apple-touch-icon" href="icon-60x60.png">
     <link rel="apple-touch-icon" sizes="120x120" href="icon-120x120.png">
 
@@ -69,12 +69,14 @@ if($minutesToGo >= 60){
             <div class="introduction">
 
                 <!-- author -->
-                <div id="intro-author">NEXT TRAIN</div>
+                <div id="intro-author">NEXT TRAIN FROM</div>
                 <!-- author end -->
                 <!-- title -->
                 <div id="intro-title">RHODES<span class="to">TO</span><span>EPPING</span></div>
                 <!-- title end -->
 
+				<div id="intro-author">WILL DEPART IN</div>
+				
                 <!-- countdown -->
                 <div id="countdown-wrapper">
                     <div id="countdown-wrap">
@@ -146,7 +148,7 @@ if($minutesToGo >= 60){
             slides 					:  	[			// Slideshow Images
                 {image : 'images/background/1.jpg', title : '', thumb : '', url : ''},
                 {image : 'images/background/2.jpg', title : '', thumb : '', url : ''},
-                {image : 'images/background/3.jpg', title : '', thumb : '', url : ''}
+                {image : 'images/background/4.jpg', title : '', thumb : '', url : ''}
             ]
 
         });

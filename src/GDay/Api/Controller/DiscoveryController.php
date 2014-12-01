@@ -9,19 +9,19 @@
 namespace GDay\Api\Controller;
 
 
-class ServiceController extends BaseController{
+class DiscoveryController extends BaseController{
 
-    private  $serviceManager;
+    private  $discoveryManager;
 
     function __construct(){
         parent::__construct();
 
-        $this->serviceManager = new \GDay\Manager\ServiceManager();
+        $this->discoveryManager = new \GDay\Manager\DiscoveryManager();
     }
 
     public function indexAction()
     {
-        $response = $this->serviceManager->getServicesBySuburbId(1);
+        $response = $this->discoveryManager->getDiscoveriesBySuburbId(1);
 
         return $this->json($response);
     }
