@@ -15,15 +15,16 @@ class TrainService extends BaseService{
         parent::__construct();
     }
 
-    function getNextTrainBySuburbId($suburbId, $direction){
+    function getNextTrainBySuburbId($suburbId, $direction, $weekend){
         $sql = 'SELECT * FROM gday.train_time
-                WHERE arrive_time > CURTIME() AND direction = :direction AND suburb_id = :suburbId
+                WHERE arrive_time > CURTIME() AND direction = :direction AND suburb_id = :suburbId AND is_weekend = :weekend
                 ORDER BY arrive_time
                 LIMIT 1';
 
         $query = $this->pdo->prepare($sql);
         $query->bindParam(':suburbId', $suburbId);
         $query->bindParam(':direction', $direction);
+        $query->bindParam(':weekend', $weekend);
 
         if($data = $query->execute()){
             return $query->fetch();
@@ -48,8 +49,8 @@ class TrainService extends BaseService{
 
     }
 
-    function getTrainTimeByStartTimeAndSuburbIdAndDirection($startTime, $suburbId, $direction){
-        $row = $this->db->train_time()->where(array("suburb_id" => $suburbId, "start_time" => $startTime, "direction" => $direction, "is_deleted" => 0));
+    function getTrainTimeByStartTimeAndSuburbIdAndDirection($startTime, $suburbId, $direction, $weekend){
+        $row = $this->db->train_time()->where(array("suburb_id" => $suburbId, "start_time" => $startTime, "direction" => $direction, "is_deleted" => 0, "is_weekend" => $weekend));
         if ($data = $row->fetch()) {
             return $data;
         }else{

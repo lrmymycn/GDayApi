@@ -11,15 +11,17 @@ namespace GDay\Library\Train;
 
 class TimeTable {
     private $trainService;
+    private $weekend;
 
     function __construct(){
         $this->trainService = new \GDay\Service\TrainService();
+        $this->weekend = $this->isWeekend(date('Y-m-d'));
     }
 
     public function getNextTrain(){
         $suburbId = 1; //TODO
 
-        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
+        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity, $this->weekend);
 
         return $timeTable;
     }
@@ -35,6 +37,12 @@ class TimeTable {
 
             $this->updateArriveTime($delays, $suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
         }
+
+    }
+
+    private function isWeekend($date) {
+        $weekDay = date('w', strtotime($date));
+        return ($weekDay == 0 || $weekDay == 6);
     }
 
     private function getRealTimeData($suburbId, $direction) {
@@ -102,7 +110,7 @@ class TimeTable {
 
     private function updateArriveTime($delays,$suburbId, $direction){
         foreach($delays as $delay) {
-            $trainTime = $this->trainService->getTrainTimeByStartTimeAndSuburbIdAndDirection($delay['start_time'], $suburbId, $direction);
+            $trainTime = $this->trainService->getTrainTimeByStartTimeAndSuburbIdAndDirection($delay['start_time'], $suburbId, $direction,$this->weekend);
             $arriveTime = date('H:i:s', strtotime($trainTime['planned_arrive_time']) + $delay['delay']*60);
             $this->trainService->updateArriveTime($trainTime,$arriveTime,$delay['delay']);
         }
