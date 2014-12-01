@@ -20,7 +20,14 @@ class TrainController extends BaseController{
     }
 
     function nextTrainAction(){
-        $timeTable = $this->timeTable->getNextTrain();
+        $direction =  \GDay\Infrastructure\Enum\TrainDirection::FromCity;
+        $toCity = $this->app->request->get('toCity');
+        if($toCity == 1){
+            $direction = \GDay\Infrastructure\Enum\TrainDirection::ToCity;
+        }
+        $suburbId = 1; //TODO
+
+        $timeTable = $this->timeTable->getNextTrain($suburbId, $direction);
 
         $response = array(
             'arriveTime' => $timeTable['arrive_time'],

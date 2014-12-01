@@ -11,17 +11,15 @@ namespace GDay\Library\Train;
 
 class TimeTable {
     private $trainService;
-    private $weekend;
 
     function __construct(){
         $this->trainService = new \GDay\Service\TrainService();
-        $this->weekend = $this->isWeekend(date('Y-m-d'));
     }
 
-    public function getNextTrain(){
-        $suburbId = 1; //TODO
+    public function getNextTrain($suburbId, $direction){
 
-        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity, $this->weekend);
+        $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
+        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend);
 
         return $timeTable;
     }
@@ -38,11 +36,6 @@ class TimeTable {
             $this->updateArriveTime($delays, $suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
         }
 
-    }
-
-    private function isWeekend($date) {
-        $weekDay = date('w', strtotime($date));
-        return ($weekDay == 0 || $weekDay == 6);
     }
 
     private function getRealTimeData($suburbId, $direction) {

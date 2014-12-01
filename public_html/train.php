@@ -2,7 +2,7 @@
 require '../bootstrap.php';
 
 $trainTime = new \GDay\Library\Train\TimeTable;
-$timeTable = $trainTime->getNextTrain();
+$timeTable = $trainTime->getNextTrain(1, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
 
 $arriveTime = strtotime($timeTable['arrive_time']);
 $now = strtotime('now');

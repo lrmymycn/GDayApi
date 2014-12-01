@@ -15,16 +15,16 @@ class TrainService extends BaseService{
         parent::__construct();
     }
 
-    function getNextTrainBySuburbId($suburbId, $direction, $weekend){
+    function getNextTrainBySuburbId($suburbId, $direction, $isWeekend){
         $sql = 'SELECT * FROM gday.train_time
-                WHERE arrive_time > CURTIME() AND direction = :direction AND suburb_id = :suburbId AND is_weekend = :weekend
+                WHERE arrive_time > CURTIME() AND direction = :direction AND suburb_id = :suburbId AND is_weekend = :isWeekend
                 ORDER BY arrive_time
                 LIMIT 1';
 
         $query = $this->pdo->prepare($sql);
         $query->bindParam(':suburbId', $suburbId);
         $query->bindParam(':direction', $direction);
-        $query->bindParam(':weekend', $weekend);
+        $query->bindParam(':isWeekend', $isWeekend);
 
         if($data = $query->execute()){
             return $query->fetch();
