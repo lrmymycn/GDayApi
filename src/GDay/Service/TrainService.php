@@ -64,6 +64,7 @@ class TrainService extends BaseService{
             "arrive_time" => $arriveTime,
             "delay" => $delayTime
         );
+        echo $data['delay'];
         return $trainTime->update($data);
     }
 } 

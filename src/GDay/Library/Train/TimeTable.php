@@ -28,17 +28,19 @@ class TimeTable {
     public function updateTimeTable(){
         $suburbId = 1; //TODO get form url
 
-        $data = $this->getRealTimeData($suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
+        $data = $this->getRealTimeData($suburbId);
 
         if($data != null && isset($data['delays'])){
+
             $delays = $this->parseData($data['delays']);
 
-            $this->updateArriveTime($delays, $suburbId, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
+            $this->updateArriveTime($delays, $suburbId);
+
         }
 
     }
 
-    private function getRealTimeData($suburbId, $direction) {
+    private function getRealTimeData($suburbId) {
         try{
             $trainCode = $this->trainService->getTrainCodeBySuburbId($suburbId);
 
@@ -46,15 +48,14 @@ class TimeTable {
                 return null;
             }
 
-            $directionCode = $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "u" : "d";
+            //$directionCode = $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "u" : "d";
             $uri = "";
             foreach($trainCode as $code) {
-                $uri = $uri."CR_{$code}_{$directionCode},";
+                $uri = $uri."CR_{$code}_d,CR_{$code}_u,";
             }
 
 
             $uri = substr($uri, 0, -1);
-
             $url = "http://realtime.grofsoft.com/tripview/realtime?routes={$uri}&type=dv";
 
             //Pretend  to be a TripView ios app
@@ -77,7 +78,7 @@ class TimeTable {
         foreach ($delays as $route) {
             $tripDelay = array();
             $tripDelay['start_time'] = $route['start'];
-
+            $tripDelay['direction']  = substr($route['route'], -1) == "u" ? 1 : 0;
             if (isset($route['offsets'])) {
                 $offsets = explode(",", $route['offsets']);
                 if (count($offsets) > 2) {
@@ -101,11 +102,16 @@ class TimeTable {
         return $tripDelays;
     }
 
-    private function updateArriveTime($delays,$suburbId, $direction){
+    private function updateArriveTime($delays,$suburbId){
+        $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
         foreach($delays as $delay) {
-            $trainTime = $this->trainService->getTrainTimeByStartTimeAndSuburbIdAndDirection($delay['start_time'], $suburbId, $direction,$this->weekend);
+
+            $trainTime = $this->trainService->getTrainTimeByStartTimeAndSuburbIdAndDirection($delay['start_time'], $suburbId, $delay['direction'], $isWeekend);
+
             $arriveTime = date('H:i:s', strtotime($trainTime['planned_arrive_time']) + $delay['delay']*60);
+
             $this->trainService->updateArriveTime($trainTime,$arriveTime,$delay['delay']);
+
         }
     }
 
