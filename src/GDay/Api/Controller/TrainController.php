@@ -26,13 +26,9 @@ class TrainController extends BaseController{
             $direction = \GDay\Infrastructure\Enum\TrainDirection::ToCity;
         }
         $suburbId = 1; //TODO
+        $trainId = 1;
 
-        $timeTable = $this->timeTable->getNextTrain($suburbId, $direction);
-
-        $response = array(
-            'arriveTime' => $timeTable['arrive_time'],
-            'delay' => $timeTable['delay']
-        );
+        $response = $this->timeTable->getNextTrain($trainId, $suburbId, $direction);
 
         return $this->json($response);
     }

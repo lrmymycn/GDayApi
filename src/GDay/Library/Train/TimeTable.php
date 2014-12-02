@@ -16,14 +16,23 @@ class TimeTable {
         $this->trainService = new \GDay\Service\TrainService();
     }
 
-    public function getNextTrain($suburbId, $direction){
+    public function getNextTrain($trainId, $suburbId, $direction){
+        $train = $this->trainService->getTrainCodeById($trainId);
+        if($train == null){
+            throw new \Exception('Train not found', 10001);
+        }
 
         $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
         $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend);
 
-        return $timeTable;
-    }
+        $response = array(
+            'arriveTime' => $timeTable['arrive_time'],
+            'delay' => $timeTable['delay'],
+            'destination' => $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? $train['destination_u'] : $train['destination_d']
+        );
 
+        return $response;
+    }
 
     public function updateTimeTable(){
         $suburbId = 1; //TODO get form url
@@ -37,7 +46,6 @@ class TimeTable {
             $this->updateArriveTime($delays, $suburbId);
 
         }
-
     }
 
     private function getRealTimeData($suburbId) {
@@ -48,12 +56,10 @@ class TimeTable {
                 return null;
             }
 
-            //$directionCode = $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "u" : "d";
             $uri = "";
             foreach($trainCode as $code) {
                 $uri = $uri."CR_{$code}_d,CR_{$code}_u,";
             }
-
 
             $uri = substr($uri, 0, -1);
             $url = "http://realtime.grofsoft.com/tripview/realtime?routes={$uri}&type=dv";

@@ -33,6 +33,16 @@ class TrainService extends BaseService{
         }
     }
 
+    function getTrainCodeById($id){
+        $trainCode = $this->db->train_code()->where(array("id" => $id, "is_deleted" => 0));
+
+        if ($data = $trainCode->fetch()) {
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
     function getTrainCodeBySuburbId($suburbId){
         $rows = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
         if($rows){
@@ -64,7 +74,6 @@ class TrainService extends BaseService{
             "arrive_time" => $arriveTime,
             "delay" => $delayTime
         );
-        echo $data['delay'];
         return $trainTime->update($data);
     }
 } 
