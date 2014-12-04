@@ -33,12 +33,13 @@ class TrainService extends BaseService{
         }
     }
 
-    function getTrainCodeById($id){
-        $trainCode = $this->db->train_code()->where(array("id" => $id, "is_deleted" => 0));
+    function getTrainsBySuburbId($suburbId){
 
-        if ($data = $trainCode->fetch()) {
-            return $data;
-        }else{
+        $rows = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
+
+        if($rows){
+            return $rows;
+        } else {
             return null;
         }
     }
@@ -47,10 +48,8 @@ class TrainService extends BaseService{
         $rows = $this->db->train_code()->where(array("suburb_id" => $suburbId, "is_deleted" => 0));
         if($rows){
             $codes = array();
-            $i = 0;
             foreach ($rows as $row) {
-                $codes[$i] = $row[code];
-                $i++;
+                $codes[] = $row[code];
             }
             return $codes;
         } else {

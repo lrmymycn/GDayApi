@@ -3,7 +3,7 @@ require '../bootstrap.php';
 
 $trainTime = new \GDay\Library\Train\TimeTable;
 $timeTable = $trainTime->getNextTrain(1, \GDay\Infrastructure\Enum\TrainDirection::FromCity);
-$arriveTime = strtotime($timeTable['arrive_time']);
+$arriveTime = strtotime($timeTable['arriveTime']);
 $now = strtotime('now');
 $internal = $arriveTime - $now;
 $minutesToGo = ceil($internal / 60);
@@ -71,7 +71,7 @@ if($minutesToGo >= 60){
                 <div id="intro-author">NEXT TRAIN FROM</div>
                 <!-- author end -->
                 <!-- title -->
-                <div id="intro-title">RHODES<span class="to">TO</span><span>EPPING</span></div>
+                <div id="intro-title">RHODES<span class="to">TO</span><span><?php echo $timeTable['destination'] ?></span></div>
                 <!-- title end -->
 
 				<div id="intro-author">WILL DEPART IN</div>

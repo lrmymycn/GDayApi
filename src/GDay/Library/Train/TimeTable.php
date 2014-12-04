@@ -16,19 +16,14 @@ class TimeTable {
         $this->trainService = new \GDay\Service\TrainService();
     }
 
-    public function getNextTrain($trainId, $suburbId, $direction){
-        $train = $this->trainService->getTrainCodeById($trainId);
-        if($train == null){
-            throw new \Exception('Train not found', 10001);
-        }
+    public function getNextTrain($suburbId, $direction){
 
         $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
         $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend);
-
         $response = array(
             'arriveTime' => $timeTable['arrive_time'],
             'delay' => $timeTable['delay'],
-            'destination' => $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? $train['destination_u'] : $train['destination_d']
+            'destination' => $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "City" : "Epping"
         );
 
         return $response;
@@ -50,15 +45,16 @@ class TimeTable {
 
     private function getRealTimeData($suburbId) {
         try{
-            $trainCode = $this->trainService->getTrainCodeBySuburbId($suburbId);
+            //$trainCode = $this->trainService->getTrainCodeBySuburbId($suburbId);
+            $trains = $this->trainService->getTrainsBySuburbId($suburbId);
 
-            if(!$trainCode){
+            if(!$trains){
                 return null;
             }
 
             $uri = "";
-            foreach($trainCode as $code) {
-                $uri = $uri."CR_{$code}_d,CR_{$code}_u,";
+            foreach($trains as $train) {
+                $uri = $uri."CR_{$train[code]}_d,CR_{$train[code]}_u,";
             }
 
             $uri = substr($uri, 0, -1);
