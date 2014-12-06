@@ -17,9 +17,10 @@ class TimeTable {
     }
 
     public function getNextTrain($suburbId, $direction){
-
+        echo $direction;
         $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
         $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend);
+
         $response = array(
             'arriveTime' => $timeTable['arrive_time'],
             'delay' => $timeTable['delay'],
@@ -35,11 +36,8 @@ class TimeTable {
         $data = $this->getRealTimeData($suburbId);
 
         if($data != null && isset($data['delays'])){
-
             $delays = $this->parseData($data['delays']);
-
             $this->updateArriveTime($delays, $suburbId);
-
         }
     }
 

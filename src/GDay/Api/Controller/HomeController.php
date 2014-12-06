@@ -2,14 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: Huisan
- * Date: 2/12/14
- * Time: 12:14 AM
+ * Date: 6/12/14
+ * Time: 2:50 PM
  */
 
 namespace GDay\Api\Controller;
 
 
-class TrainController extends BaseController{
+class HomeController extends BaseController{
 
     private $timeTable;
 
@@ -19,7 +19,7 @@ class TrainController extends BaseController{
         $this->timeTable = new \GDay\Library\Train\TimeTable;
     }
 
-    function nextTrainAction(){
+    function indexAction(){
         $direction =  \GDay\Infrastructure\Enum\TrainDirection::FromCity;
         $toCity = $this->app->request->get('toCity');
         if($toCity == 1){
@@ -28,8 +28,11 @@ class TrainController extends BaseController{
         $suburbId = 1; //TODO
         $trainId = 1;
 
-        $response = $this->timeTable->getNextTrain($trainId, $suburbId, $direction);
+        $nextTrain = $this->timeTable->getNextTrain($trainId, $suburbId, $direction);
 
+        $response = array(
+            'nextTrain' => $nextTrain
+        );
         return $this->json($response);
     }
 } 

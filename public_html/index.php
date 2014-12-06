@@ -11,10 +11,10 @@ $app = New \SlimController\Slim(array(
 $app->add(new \Slim\Middleware\ContentTypes());
 
 $app->addRoutes(array(
-    '/user'            => 'User:index',
-    '/discovery'        => 'Discovery:index',
-    '/shop'           => 'Shop:index',
-    '/train/nextTrain' => 'Train:nextTrain'
+    '/'              => 'Home:index',
+    '/user'         => 'User:index',
+    '/discovery'   => 'Discovery:index',
+    '/shop'         => 'Shop:index'
 ));
 
 $errorHandler = new \GDay\Api\Infrastructure\Handler\ErrorHandler($app);
