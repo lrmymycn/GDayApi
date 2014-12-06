@@ -17,7 +17,6 @@ class TimeTable {
     }
 
     public function getNextTrain($suburbId, $direction){
-        echo $direction;
         $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
         $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend);
 

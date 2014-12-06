@@ -26,9 +26,8 @@ class HomeController extends BaseController{
             $direction = \GDay\Infrastructure\Enum\TrainDirection::ToCity;
         }
         $suburbId = 1; //TODO
-        $trainId = 1;
 
-        $nextTrain = $this->timeTable->getNextTrain($trainId, $suburbId, $direction);
+        $nextTrain = $this->timeTable->getNextTrain($suburbId, $direction);
 
         $response = array(
             'nextTrain' => $nextTrain
