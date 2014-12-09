@@ -14,7 +14,8 @@ $app->addRoutes(array(
     '/'              => 'Home:index',
     '/user'         => 'User:index',
     '/discovery'   => 'Discovery:index',
-    '/shop'         => 'Shop:index'
+    '/shop'         => 'Shop:index',
+    '/feedback'    => 'Feedback:index'
 ));
 
 $errorHandler = new \GDay\Api\Infrastructure\Handler\ErrorHandler($app);
