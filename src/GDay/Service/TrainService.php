@@ -17,11 +17,11 @@ class TrainService extends BaseService{
 
     function getNextTrainBySuburbId($suburbId, $direction, $isWeekend, $firstOne){
         $sql = 'SELECT * FROM gday.train_time
-                WHERE arrive_time > :time AND direction = :direction AND suburb_id = :suburbId AND is_weekend = :isWeekend
+                WHERE arrive_time > :time AND direction = :direction AND suburb_id = :suburbId AND is_weekend = :isWeekend AND is_deleted = 0
                 AND (SELECT COUNT( * )
                 FROM train_trackwork
                 WHERE NOW( ) > date_start
-                AND NOW( ) < date_end) = 0
+                AND NOW( ) < date_end AND is_deleted = 0) = 0
                 ORDER BY arrive_time
                 LIMIT 1';
 

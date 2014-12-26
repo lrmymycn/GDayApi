@@ -30,8 +30,10 @@ class TimeTable {
         $message = 'Running on time';
         if($timeTable == null){
             $message = 'Track work today';
-        }else if ($timeTable['delay'] > 0){
-            $message = 'Delay ' . $timeTable['delay'] . ' minutes';
+        }else if ($timeTable['delay'] == 1){
+            $message =  $timeTable['delay'] . ' min delay';
+        }else if($timeTable['delay'] > 1){
+            $message =  $timeTable['delay'] . ' mins delay';
         }
 
         $response = array(
