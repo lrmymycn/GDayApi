@@ -18,11 +18,26 @@ class TimeTable {
 
     public function getNextTrain($suburbId, $direction){
         $isWeekend = \GDay\Infrastructure\Utility\DateUtility::isWeekend(date('Y-m-d'));
-        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend);
+        $timeTable = $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend, false);
+
+        //If no timetable return and current time is > 23:00, try to get the first train next day
+        $lastTrainTime = strtotime('23:00:00');
+        $currentTime = strtotime(date('G:i:s'));
+
+        if($timeTable == null && $currentTime > $lastTrainTime){
+            $timeTable =  $this->trainService->getNextTrainBySuburbId($suburbId, $direction, $isWeekend, true);
+        }
+        $message = 'Running on time';
+        if($timeTable == null){
+            $message = 'Track work today';
+        }else if ($timeTable['delay'] > 0){
+            $message = 'Delay ' . $timeTable['delay'] . ' minutes';
+        }
 
         $response = array(
             'arriveTime' => $timeTable['arrive_time'],
             'delay' => $timeTable['delay'],
+            'message' => $message,
             'destination' => $direction == \GDay\Infrastructure\Enum\TrainDirection::ToCity ? "City" : "Epping"
         );
 

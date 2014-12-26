@@ -49,3 +49,5 @@ config/local.js
 src/Files/TimeTable/t1.html
 
 src/Files/TimeTable/t1.html
+
+local.php
